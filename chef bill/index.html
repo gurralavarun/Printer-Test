@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chief Bill - POS-80C Thermal Receipt Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span>Chief Bill & KOT Studio</span>
+        </div>
+        <div class="status-indicator" id="printer-status-pill">
+          <span class="status-dot"></span>
+          <span>Printer: <strong>POS-80C (USB001)</strong> - Ready</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-new-order" class="btn btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          New Order
+        </button>
+        <button id="btn-reset-sample" class="btn btn-secondary" title="Reset to Chief Bill photo data">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          Load Photo Sample
+        </button>
+        <button id="btn-print-browser" class="btn btn-secondary" title="Open Browser Print Dialog">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          Preview / PDF
+        </button>
+        <button id="btn-direct-print" class="btn btn-primary btn-glow" title="Instantly print on POS-80C">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          ⚡ Direct Print (POS-80C)
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+      <!-- Left Panel: POS Entry Form -->
+      <section class="editor-panel">
+        <div class="panel-header">
+          <h2>Order & Bill Entry</h2>
+          <p>Enter order details, select or type menu items, quantities, and remarks below.</p>
+        </div>
+
+        <!-- Section 1: Order Metadata -->
+        <div class="form-card">
+          <div class="card-title-row">
+            <span class="card-title">1. Order Header & Table</span>
+            <div class="quick-helpers">
+              <button type="button" class="chip-btn" id="btn-auto-orderno">+ Auto #</button>
+              <button type="button" class="chip-btn" id="btn-now-datetime">Clock Now</button>
+            </div>
+          </div>
+          
+          <div class="grid-3">
+            <div class="form-group">
+              <label for="inp-orderno">Order Number</label>
+              <input type="text" id="inp-orderno" value="#CS241027" placeholder="e.g. #CS241027">
+            </div>
+            <div class="form-group">
+              <label for="inp-date">Date</label>
+              <input type="text" id="inp-date" value="22 Sep 2026" placeholder="e.g. 23 Sep 2026">
+            </div>
+            <div class="form-group">
+              <label for="inp-time">Time</label>
+              <input type="text" id="inp-time" value="01:15 PM" placeholder="e.g. 03:30 PM">
+            </div>
+          </div>
+
+          <div class="grid-2 mt-3">
+            <div class="form-group">
+              <label for="inp-table">Table Number</label>
+              <input type="text" id="inp-table" value="T-08" placeholder="e.g. T-08">
+              <div class="quick-chips mt-1">
+                <span class="chip" data-set-table="T-01">T-01</span>
+                <span class="chip" data-set-table="T-02">T-02</span>
+                <span class="chip" data-set-table="T-05">T-05</span>
+                <span class="chip" data-set-table="T-08">T-08</span>
+                <span class="chip" data-set-table="T-12">T-12</span>
+                <span class="chip" data-set-table="Takeaway">Takeaway</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inp-type">Order Type</label>
+              <div class="type-selector">
+                <button type="button" class="type-btn active" data-type="Dine In">Dine In</button>
+                <button type="button" class="type-btn" data-type="Take Away">Take Away</button>
+                <button type="button" class="type-btn" data-type="Delivery">Delivery</button>
+              </div>
+              <input type="hidden" id="inp-type" value="Dine In">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Quick Menu & Item Entry -->
+        <div class="form-card">
+          <div class="card-title-row">
+            <span class="card-title">2. Menu & Items</span>
+            <span class="helper-text">Click an item below to quick-add</span>
+          </div>
+
+          <!-- Quick Menu Pills -->
+          <div class="quick-menu-chips">
+            <button type="button" class="menu-chip" data-name="Veg Biryani" data-rem="-">+ Veg Biryani</button>
+            <button type="button" class="menu-chip" data-name="Paneer Butter Masala" data-rem="Less Spicy">+ Paneer Butter Masala</button>
+            <button type="button" class="menu-chip" data-name="Chapati" data-rem="-">+ Chapati</button>
+            <button type="button" class="menu-chip" data-name="Buttermilk" data-rem="Chilled">+ Buttermilk</button>
+            <button type="button" class="menu-chip" data-name="Gulab Jamun" data-rem="-">+ Gulab Jamun</button>
+            <button type="button" class="menu-chip" data-name="Masala Dosa" data-rem="Crisp">+ Masala Dosa</button>
+            <button type="button" class="menu-chip" data-name="Veg Fried Rice" data-rem="-">+ Fried Rice</button>
+            <button type="button" class="menu-chip" data-name="Cold Coffee" data-rem="Chilled">+ Cold Coffee</button>
+            <button type="button" class="menu-chip" data-name="Filter Coffee" data-rem="Strong">+ Coffee</button>
+            <button type="button" class="menu-chip" data-name="Tea" data-rem="Hot">+ Tea</button>
+          </div>
+
+          <!-- Items Table Header -->
+          <div class="editor-items-head">
+            <span class="col-head-idx">#</span>
+            <span class="col-head-name">Menu Item</span>
+            <span class="col-head-qty">Qty</span>
+            <span class="col-head-rem">Remarks</span>
+            <span class="col-head-act">Action</span>
+          </div>
+
+          <div class="items-editor-table" id="items-editor-container">
+            <!-- Dynamic rows injected here -->
+          </div>
+
+          <div class="editor-items-footer">
+            <button type="button" id="btn-add-item" class="btn btn-outline btn-block">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Custom Item
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 3: Special Instructions & Notes -->
+        <div class="form-card">
+          <div class="card-title-row">
+            <span class="card-title">3. Kitchen Instructions</span>
+          </div>
+          <div class="form-group">
+            <label for="inp-instructions">Special Instructions</label>
+            <textarea id="inp-instructions" rows="2" placeholder="e.g. No onion. Serve hot.">No onion. Serve hot.</textarea>
+            <div class="quick-chips mt-1">
+              <span class="chip chip-inst" data-inst="No onion. Serve hot.">No onion. Serve hot.</span>
+              <span class="chip chip-inst" data-inst="Less spicy. Extra crisp.">Less spicy</span>
+              <span class="chip chip-inst" data-inst="Pack gravy separately.">Pack separately</span>
+              <span class="chip chip-inst" data-inst="Urgent order. Prepare fast.">Urgent</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="print-toast" class="toast hidden">
+          <div class="toast-icon">⚡</div>
+          <div class="toast-body">
+            <div class="toast-title" id="toast-title">Printing...</div>
+            <div class="toast-msg" id="toast-msg">Sending data to POS-80C</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Live Receipt Preview -->
+      <section class="preview-panel">
+        <div class="preview-controls">
+          <span class="preview-title">Live 80mm Thermal Receipt</span>
+          <div class="zoom-tags">
+            <span class="badge-tag">Paper: 80mm Roll</span>
+            <span class="badge-tag">Width: 576 dots / 72mm</span>
+          </div>
+        </div>
+
+        <div class="paper-stage">
+          <!-- Realistic Receipt Paper Container -->
+          <div class="receipt-paper" id="receipt-paper">
+            <!-- Top Tear Edge -->
+            <div class="tear-edge tear-top"></div>
+
+            <div class="receipt-body" id="receipt-body">
+              <!-- Header 3 Columns -->
+              <div class="receipt-header">
+                <!-- Col 1: Logo -->
+                <div class="header-col-logo">
+                  <img id="receipt-logo" src="logo.png" alt="Canteen Logo">
+                </div>
+
+                <!-- Col 2: Brand & Tagline -->
+                <div class="header-col-brand">
+                  <div class="brand-title">CANTEEN<br>SERVICES</div>
+                  <div class="brand-sub">GOOD FOOD</div>
+                  <div class="brand-sub2">GREATER SERVICE</div>
+                </div>
+
+                <!-- Vertical Divider -->
+                <div class="header-v-divider"></div>
+
+                <!-- Col 3: Values -->
+                <div class="header-col-values">
+                  <span>FRESH</span>
+                  <span>HYGIENIC</span>
+                  <span>NUTRITIOUS</span>
+                  <span>FOR A BETTER YOU</span>
+                </div>
+              </div>
+
+              <!-- Kitchen Order Badge -->
+              <div class="badge-section">
+                <div class="kot-badge">KITCHEN ORDER</div>
+                <div class="kot-sub" id="preview-badge-sub">PREPARE WITH CARE</div>
+              </div>
+
+              <!-- Dashed Divider -->
+              <div class="dashed-line"></div>
+
+              <!-- Order Details & Table Box -->
+              <div class="order-meta-row">
+                <div class="meta-col-left">
+                  <div class="meta-line">
+                    <span class="meta-label">Order No</span>
+                    <span class="meta-sep">:</span>
+                    <span class="meta-val bold" id="preview-orderno">#CS241027</span>
+                  </div>
+                  <div class="meta-line">
+                    <span class="meta-label">Date</span>
+                    <span class="meta-sep">:</span>
+                    <span class="meta-val" id="preview-date">22 Sep 2026</span>
+                  </div>
+                  <div class="meta-line">
+                    <span class="meta-label">Time</span>
+                    <span class="meta-sep">:</span>
+                    <span class="meta-val" id="preview-time">01:15 PM</span>
+                  </div>
+                  <div class="meta-line">
+                    <span class="meta-label">Table</span>
+                    <span class="meta-sep">:</span>
+                    <span class="meta-val bold" id="preview-table">T-08</span>
+                  </div>
+                  <div class="meta-line">
+                    <span class="meta-label">Order Type</span>
+                    <span class="meta-sep">:</span>
+                    <span class="meta-val bold" id="preview-type">Dine In</span>
+                  </div>
+                </div>
+
+                <div class="meta-col-right">
+                  <div class="table-box">
+                    <div class="table-box-label">TABLE</div>
+                    <div class="table-box-number" id="preview-table-box">T-08</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dashed Divider -->
+              <div class="dashed-line"></div>
+
+              <!-- Items Table -->
+              <div class="items-table-wrapper">
+                <div class="items-table-head">
+                  <div class="col-num">#</div>
+                  <div class="col-item">ITEM</div>
+                  <div class="col-qty">QTY</div>
+                  <div class="col-rem">REMARKS</div>
+                </div>
+                <div class="items-head-line"></div>
+
+                <div class="items-table-body" id="preview-items-list">
+                  <!-- Dynamically populated rows -->
+                </div>
+              </div>
+
+              <!-- Dashed Divider -->
+              <div class="dashed-line"></div>
+
+              <!-- Special Instructions -->
+              <div class="instructions-row">
+                <div class="instruction-icon">
+                  <img id="receipt-note-icon" src="note_icon.png" alt="Note Icon">
+                </div>
+                <div class="instruction-content">
+                  <div class="instruction-title">SPECIAL INSTRUCTIONS :</div>
+                  <div class="instruction-text" id="preview-instructions">No onion. Serve hot.</div>
+                </div>
+              </div>
+
+              <!-- Dashed Divider -->
+              <div class="dashed-line"></div>
+
+              <!-- Footer Section -->
+              <div class="receipt-footer">
+                <div class="footer-callout" id="preview-footer-note">KINDLY PREPARE AND SERVE FRESH</div>
+                
+                <div class="thank-you-row">
+                  <div class="ty-line"></div>
+                  <span class="ty-script">Thank You</span>
+                  <div class="ty-line"></div>
+                </div>
+
+                <div class="footer-brand">CANTEEN SERVICES</div>
+                <div class="footer-sub">GOOD FOOD. GREATER SERVICE.</div>
+              </div>
+            </div>
+
+            <!-- Bottom Tear Edge -->
+            <div class="tear-edge tear-bottom"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Offscreen Canvas for Direct Thermal Raster Generation -->
+  <canvas id="thermal-canvas" width="576" height="1200" style="display:none;"></canvas>
+
+  <datalist id="menu-items-list">
+    <option value="Veg Biryani">
+    <option value="Paneer Butter Masala">
+    <option value="Chapati">
+    <option value="Buttermilk">
+    <option value="Gulab Jamun">
+    <option value="Masala Dosa">
+    <option value="Plain Dosa">
+    <option value="Idli Vada">
+    <option value="Veg Fried Rice">
+    <option value="Jeera Rice">
+    <option value="Dal Tadka">
+    <option value="Cold Coffee">
+    <option value="Filter Coffee">
+    <option value="Tea">
+  </datalist>
+
+  <script src="assets.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

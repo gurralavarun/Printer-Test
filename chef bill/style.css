@@ -1,0 +1,997 @@
+/* ==========================================================
+   CHIEF BILL THERMAL TEMPLATE & POS STUDIO STYLESHEET
+   Target: POS-80C (80mm Thermal Receipt, 576 dots printable)
+   ========================================================== */
+
+:root {
+  --bg-primary: #0b1120;
+  --bg-secondary: #131c31;
+  --bg-card: #1a253c;
+  --bg-input: #0f172a;
+  --border-color: #2e3d5b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-hover: #0284c7;
+  --accent-glow: rgba(56, 189, 248, 0.35);
+  --success: #10b981;
+  --success-glow: rgba(16, 185, 129, 0.4);
+  --danger: #ef4444;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-receipt: 'Inter', Arial, sans-serif;
+  --font-mono: 'Courier Prime', Consolas, monospace;
+  --font-script: 'Great Vibes', cursive;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--text-main);
+  letter-spacing: -0.2px;
+}
+
+.brand-badge svg {
+  color: var(--accent);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  color: #34d399;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--success);
+  box-shadow: 0 0 10px var(--success);
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--success-glow);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px var(--success-glow);
+}
+
+.btn-glow {
+  animation: pulse-glow 2.5s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 12px var(--success-glow); }
+  50% { box-shadow: 0 0 22px var(--success-glow); }
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border-color);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px dashed var(--accent);
+  color: var(--accent);
+}
+
+.btn-outline:hover {
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.btn-block {
+  width: 100%;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* Workspace Layout */
+.workspace {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 28px;
+  padding: 24px;
+  flex: 1;
+  max-width: 1650px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Editor Panel */
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.panel-header h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.panel-header p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.form-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.2px;
+}
+
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.helper-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.quick-helpers {
+  display: flex;
+  gap: 8px;
+}
+
+.chip-btn {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent);
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip-btn:hover {
+  background: rgba(56, 189, 248, 0.25);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.mt-1 { margin-top: 6px; }
+.mt-3 { margin-top: 14px; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input[type="text"], textarea {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+input[type="text"]:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+/* Quick Chips */
+.quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--text-main);
+  background: rgba(56, 189, 248, 0.1);
+}
+
+/* Order Type Selector */
+.type-selector {
+  display: flex;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 3px;
+}
+
+.type-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 7px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.type-btn.active {
+  background: var(--accent);
+  color: #0b1120;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.3);
+}
+
+/* Quick Menu Chips */
+.quick-menu-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+.menu-chip {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #e0f2fe;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.menu-chip:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Items Editor Table */
+.editor-items-head {
+  display: grid;
+  grid-template-columns: 28px 1.4fr 90px 1fr 34px;
+  gap: 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 8px 6px;
+}
+
+.items-editor-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.item-row-edit {
+  display: grid;
+  grid-template-columns: 28px 1.4fr 90px 1fr 34px;
+  gap: 8px;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  transition: border-color 0.2s;
+}
+
+.item-row-edit:hover {
+  border-color: var(--border-color);
+}
+
+.row-idx {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-align: center;
+}
+
+/* Stepper Quantity Control */
+.qty-stepper {
+  display: flex;
+  align-items: center;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.btn-step {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 26px;
+  height: 34px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.btn-step:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.inp-item-qty {
+  width: 38px;
+  border: none !important;
+  text-align: center;
+  padding: 4px 0 !important;
+  font-weight: 800;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.btn-del-row {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.btn-del-row:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+}
+
+.editor-items-footer {
+  margin-top: 10px;
+}
+
+/* Notification Toast */
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #064e3b;
+  border: 1px solid #059669;
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  color: #ecfdf5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease;
+}
+
+.toast.hidden {
+  display: none;
+}
+
+.toast.toast-error {
+  background: #7f1d1d;
+  border-color: #dc2626;
+  color: #fef2f2;
+}
+
+.toast-icon {
+  font-size: 1.3rem;
+}
+
+.toast-title {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.toast-msg {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* ==========================================================
+   PREVIEW PANEL & REALISTIC THERMAL RECEIPT
+   ========================================================== */
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.preview-controls {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.preview-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.badge-tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  color: var(--accent);
+}
+
+.paper-stage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 40px;
+  background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Realistic 80mm Receipt Paper Styling */
+.receipt-paper {
+  width: 390px;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-receipt);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* Serrated Tear Edge */
+.tear-edge {
+  width: 100%;
+  height: 12px;
+  background-color: #ffffff;
+}
+
+.tear-top {
+  clip-path: polygon(
+    0% 100%, 2% 0%, 4% 100%, 6% 0%, 8% 100%, 10% 0%, 12% 100%, 14% 0%, 16% 100%, 18% 0%, 20% 100%,
+    22% 0%, 24% 100%, 26% 0%, 28% 100%, 30% 0%, 32% 100%, 34% 0%, 36% 100%, 38% 0%, 40% 100%,
+    42% 0%, 44% 100%, 46% 0%, 48% 100%, 50% 0%, 52% 100%, 54% 0%, 56% 100%, 58% 0%, 60% 100%,
+    62% 0%, 64% 100%, 66% 0%, 68% 100%, 70% 0%, 72% 100%, 74% 0%, 76% 100%, 78% 0%, 80% 100%,
+    82% 0%, 84% 100%, 86% 0%, 88% 100%, 90% 0%, 92% 100%, 94% 0%, 96% 100%, 98% 0%, 100% 100%
+  );
+  margin-top: -10px;
+}
+
+.tear-bottom {
+  clip-path: polygon(
+    0% 0%, 2% 100%, 4% 0%, 6% 100%, 8% 0%, 10% 100%, 12% 0%, 14% 100%, 16% 0%, 18% 100%, 20% 0%,
+    22% 100%, 24% 0%, 26% 100%, 28% 0%, 30% 100%, 32% 0%, 34% 100%, 36% 0%, 38% 100%, 40% 0%,
+    42% 100%, 44% 0%, 46% 100%, 48% 0%, 50% 100%, 52% 0%, 54% 100%, 56% 0%, 58% 100%, 60% 0%,
+    62% 100%, 64% 0%, 66% 100%, 68% 0%, 70% 100%, 72% 0%, 74% 100%, 76% 0%, 78% 100%, 80% 0%,
+    82% 100%, 84% 0%, 86% 100%, 88% 0%, 90% 100%, 92% 0%, 94% 100%, 96% 0%, 98% 100%, 100% 0%
+  );
+  margin-bottom: -10px;
+}
+
+.receipt-body {
+  padding: 18px 20px 24px;
+}
+
+/* ==========================================================
+   RECEIPT COMPONENTS (EXACT MATCH TO CHIEF BILL.PNG)
+   ========================================================== */
+
+/* 1. Header (Logo, Brand, Values) */
+.receipt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.header-col-logo {
+  flex-shrink: 0;
+  width: 72px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-col-logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.header-col-brand {
+  flex: 1;
+  padding: 0 8px;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  color: #000000;
+}
+
+.brand-sub {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-top: 4px;
+  color: #000000;
+}
+
+.brand-sub2 {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  color: #000000;
+}
+
+.header-v-divider {
+  width: 1px;
+  height: 54px;
+  background-color: #000000;
+  margin: 0 8px;
+}
+
+.header-col-values {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #111111;
+  text-align: left;
+}
+
+/* 2. Badge: Kitchen Order */
+.badge-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12px 0 14px;
+}
+
+.kot-badge {
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 5px 28px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.kot-sub {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 3.5px;
+  margin-top: 6px;
+  color: #000000;
+}
+
+/* Dashed Lines */
+.dashed-line {
+  border-top: 1.5px dashed #333333;
+  margin: 10px 0;
+  width: 100%;
+}
+
+/* 3. Order Details & Table Box */
+.order-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+}
+
+.meta-col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.88rem;
+  color: #000000;
+}
+
+.meta-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.meta-label {
+  width: 90px;
+  font-weight: 500;
+}
+
+.meta-sep {
+  width: 18px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.meta-val {
+  font-weight: 500;
+}
+
+.meta-val.bold {
+  font-weight: 900;
+}
+
+.meta-col-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-box {
+  border: 1.8px solid #000000;
+  border-radius: 6px;
+  padding: 6px 14px;
+  text-align: center;
+  min-width: 90px;
+}
+
+.table-box-label {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.table-box-number {
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* 4. Items Table */
+.items-table-wrapper {
+  margin: 4px 0;
+}
+
+.items-table-head {
+  display: grid;
+  grid-template-columns: 24px 1fr 44px 90px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  padding: 4px 0 6px;
+  color: #000000;
+}
+
+.col-num { text-align: left; }
+.col-item { text-align: left; }
+.col-qty { text-align: center; }
+.col-rem { text-align: left; padding-left: 6px; }
+
+.items-head-line {
+  border-bottom: 1.5px solid #000000;
+  margin-bottom: 8px;
+}
+
+.items-table-body {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.receipt-item-row {
+  display: grid;
+  grid-template-columns: 24px 1fr 44px 90px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #000000;
+}
+
+.item-qty {
+  text-align: center;
+}
+
+.item-rem {
+  text-align: left;
+  padding-left: 6px;
+  font-size: 0.82rem;
+}
+
+/* 5. Special Instructions */
+.instructions-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.instruction-icon {
+  width: 24px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.instruction-icon img {
+  width: 100%;
+  height: auto;
+}
+
+.instruction-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.instruction-title {
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  color: #000000;
+}
+
+.instruction-text {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #000000;
+}
+
+/* 6. Footer Section */
+.receipt-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.footer-callout {
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+  margin-bottom: 8px;
+  color: #000000;
+}
+
+.thank-you-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  gap: 12px;
+  margin: 2px 0 8px;
+}
+
+.ty-line {
+  flex: 1;
+  height: 1px;
+  background-color: #000000;
+}
+
+.ty-script {
+  font-family: var(--font-script);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.footer-brand {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-top: 4px;
+  color: #000000;
+}
+
+.footer-sub {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  margin-top: 2px;
+  color: #111111;
+}
+
+/* ==========================================================
+   PRINT SPECIFICATION FOR POS-80C (80mm Thermal Printer)
+   ========================================================== */
+
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-height: auto !important;
+  }
+
+  .app-header,
+  .editor-panel,
+  .preview-controls,
+  .tear-edge {
+    display: none !important;
+  }
+
+  .workspace {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .paper-stage {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .receipt-paper {
+    width: 72mm !important;
+    box-shadow: none !important;
+    filter: none !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid;
+  }
+
+  .receipt-body {
+    padding: 6mm 2mm 6mm !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
