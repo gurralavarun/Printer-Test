@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Invoice - IAS WhatsApp Bill Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span>Food Invoice & Bill Studio (IAS Template)</span>
+        </div>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span>Target Printer: <strong>POS-80C (USB001)</strong> - Ready</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="btn-new-order" class="btn btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          New Bill
+        </button>
+        <button type="button" id="btn-reset-sample" class="btn btn-secondary" title="Restore Photo Sample">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          Photo Sample
+        </button>
+        <button type="button" id="btn-download-image" class="btn btn-whatsapp" title="Export exact image for WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download WhatsApp Image
+        </button>
+        <button type="button" id="btn-print-browser" class="btn btn-secondary" title="Browser Print (Color / PDF)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print / PDF
+        </button>
+        <button type="button" id="btn-direct-print" class="btn btn-primary btn-glow" title="Print directly to POS-80C">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          ⚡ Direct Print (POS-80C)
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+      <!-- Left Panel: Form Controls -->
+      <section class="editor-panel">
+        <div class="panel-header">
+          <h2>Bill Parameters & Items</h2>
+          <p>Modify invoice metadata, customer info, menu items, prices, and UPI QR details.</p>
+        </div>
+
+        <!-- Card 1: Invoice Metadata -->
+        <div class="form-card">
+          <div class="card-title-row">
+            <span class="card-title">1. Invoice Header & Customer</span>
+            <div class="quick-helpers">
+              <button type="button" class="chip-btn" id="btn-auto-invoiceno">+ Auto #</button>
+              <button type="button" class="chip-btn" id="btn-now-datetime">Clock Now</button>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="form-group">
+              <label for="inp-invoiceno">Invoice No.</label>
+              <input type="text" id="inp-invoiceno" value="CS260922-0157">
+            </div>
+            <div class="form-group">
+              <label for="inp-datetime">Date & Time</label>
+              <input type="text" id="inp-datetime" value="22 Sep 2026, 01:48 PM">
+            </div>
+            <div class="form-group">
+              <label for="inp-paymode">Payment Mode</label>
+              <input type="text" id="inp-paymode" value="UPI / Card">
+            </div>
+          </div>
+
+          <div class="sub-divider"></div>
+
+          <div class="form-group">
+            <label for="inp-cust-name">Billed To (Customer Name)</label>
+            <input type="text" id="inp-cust-name" value="Shri Konapala Saikiran, IAS" placeholder="e.g. Shri Konapala Saikiran, IAS">
+          </div>
+
+          <div class="grid-2 mt-2">
+            <div class="form-group">
+              <label for="inp-cust-desig">Designation</label>
+              <input type="text" id="inp-cust-desig" value="District Collector & District Magistrate" placeholder="e.g. District Collector">
+            </div>
+            <div class="form-group">
+              <label for="inp-cust-loc">Location</label>
+              <input type="text" id="inp-cust-loc" value="Vijayawada, Andhra Pradesh" placeholder="e.g. Vijayawada, AP">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Menu Items & Pricing -->
+        <div class="form-card">
+          <div class="card-title-row">
+            <span class="card-title">2. Menu Items & Quantity</span>
+            <span class="helper-text">Click quick chips to add with price</span>
+          </div>
+
+          <!-- Quick Menu Chips -->
+          <div class="quick-menu-chips">
+            <button type="button" class="menu-chip" data-name="Veg Biryani" data-price="120">+ Veg Biryani (₹120)</button>
+            <button type="button" class="menu-chip" data-name="Paneer Butter Masala" data-price="140">+ Paneer Butter Masala (₹140)</button>
+            <button type="button" class="menu-chip" data-name="Chapati" data-price="15">+ Chapati (₹15)</button>
+            <button type="button" class="menu-chip" data-name="Buttermilk" data-price="20">+ Buttermilk (₹20)</button>
+            <button type="button" class="menu-chip" data-name="Gulab Jamun" data-price="40">+ Gulab Jamun (₹40)</button>
+            <button type="button" class="menu-chip" data-name="Masala Dosa" data-price="60">+ Masala Dosa (₹60)</button>
+            <button type="button" class="menu-chip" data-name="Veg Fried Rice" data-price="110">+ Fried Rice (₹110)</button>
+            <button type="button" class="menu-chip" data-name="Cold Coffee" data-price="50">+ Cold Coffee (₹50)</button>
+            <button type="button" class="menu-chip" data-name="Filter Coffee" data-price="25">+ Coffee (₹25)</button>
+            <button type="button" class="menu-chip" data-name="Tea" data-price="15">+ Tea (₹15)</button>
+          </div>
+
+          <!-- Items Table Header -->
+          <div class="editor-items-head">
+            <span class="col-head-idx">#</span>
+            <span class="col-head-name">Item Name</span>
+            <span class="col-head-qty">Qty</span>
+            <span class="col-head-price">Price (₹)</span>
+            <span class="col-head-amt">Amount</span>
+            <span class="col-head-act">Act</span>
+          </div>
+
+          <div class="items-editor-table" id="items-editor-container">
+            <!-- Dynamic rows inserted here -->
+          </div>
+
+          <div class="editor-items-footer">
+            <button type="button" id="btn-add-item" class="btn btn-outline btn-block">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Custom Item
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3: QR Code & UPI Configuration -->
+        <div class="form-card">
+          <div class="card-title-row">
+            <span class="card-title">3. UPI QR Code & Taxes</span>
+          </div>
+
+          <div class="grid-3">
+            <div class="form-group">
+              <label for="inp-upi-id">UPI ID / VPA</label>
+              <input type="text" id="inp-upi-id" value="canteen@upi" placeholder="e.g. merchant@okhdfcbank">
+            </div>
+            <div class="form-group">
+              <label for="inp-payee-name">Payee Name</label>
+              <input type="text" id="inp-payee-name" value="Canteen Services" placeholder="Payee name">
+            </div>
+            <div class="form-group">
+              <label for="inp-tax-rate">GST Rate (CGST + SGST)</label>
+              <div class="tax-rate-display">2.5% + 2.5% (5%)</div>
+            </div>
+          </div>
+
+          <div class="form-group mt-2">
+            <label for="inp-qr-custom">Custom QR Link / Text (Optional override)</label>
+            <input type="text" id="inp-qr-custom" placeholder="Leave empty for auto-generated UPI payment link">
+          </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="print-toast" class="toast hidden">
+          <div class="toast-icon">⚡</div>
+          <div class="toast-body">
+            <div class="toast-title" id="toast-title">Printing...</div>
+            <div class="toast-msg" id="toast-msg">Processing request</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Live Invoice Preview -->
+      <section class="preview-panel">
+        <div class="preview-controls">
+          <span class="preview-title">Live Invoice Preview (Exact 1:1 Match)</span>
+          <div class="zoom-tags">
+            <span class="badge-tag">Format: WhatsApp Bill / 80mm</span>
+            <span class="badge-tag">Target: POS-80C</span>
+          </div>
+        </div>
+
+        <div class="paper-stage">
+          <!-- The Exact Bill Card Container -->
+          <div class="invoice-card" id="invoice-card">
+            <!-- Header Section -->
+            <div class="inv-header">
+              <!-- Logo -->
+              <div class="inv-header-logo">
+                <img src="logo.png" alt="Canteen Services Logo" id="inv-logo-img">
+              </div>
+
+              <!-- Brand & Slogan -->
+              <div class="inv-header-brand">
+                <div class="brand-name-1">CANTEEN</div>
+                <div class="brand-name-2">SERVICES</div>
+                <div class="brand-sub-1">GOOD FOOD</div>
+                <div class="brand-sub-2">GREATER SERVICE</div>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div class="inv-header-v-divider"></div>
+
+              <!-- Mission Values -->
+              <div class="inv-header-values">
+                <div class="val-line">FRESH MEALS</div>
+                <div class="val-line">HAPPIER PEOPLE</div>
+                <div class="val-line">STRONGER TOMORROW</div>
+                <div class="val-bar"></div>
+              </div>
+            </div>
+
+            <!-- Title & Customer Row -->
+            <div class="inv-meta-row">
+              <!-- Left: Food Invoice & Billed To -->
+              <div class="inv-meta-left">
+                <div class="inv-title">Food Invoice</div>
+                <div class="inv-title-sub">THANK YOU FOR DINING WITH US</div>
+
+                <div class="billed-to-box">
+                  <div class="billed-to-label">BILLED TO</div>
+                  <div class="billed-to-name" id="prev-cust-name">Shri Konapala Saikiran, IAS</div>
+                  <div class="billed-to-line" id="prev-cust-desig">District Collector & District Magistrate</div>
+                  <div class="billed-to-line" id="prev-cust-loc">Vijayawada, Andhra Pradesh</div>
+                </div>
+              </div>
+
+              <!-- Right: Invoice Metadata Box -->
+              <div class="inv-meta-right">
+                <div class="invoice-badge-box">
+                  <!-- Invoice Icon -->
+                  <div class="inv-badge-icon">
+                    <svg width="22" height="26" viewBox="0 0 24 28" fill="none" stroke="#234e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="2" width="20" height="24" rx="3"></rect>
+                      <circle cx="6.5" cy="8" r="1" fill="#234e38"></circle>
+                      <line x1="10" y1="8" x2="18" y2="8"></line>
+                      <circle cx="6.5" cy="14" r="1" fill="#234e38"></circle>
+                      <line x1="10" y1="14" x2="18" y2="14"></line>
+                      <circle cx="6.5" cy="20" r="1" fill="#234e38"></circle>
+                      <line x1="10" y1="20" x2="18" y2="20"></line>
+                    </svg>
+                  </div>
+
+                  <div class="badge-row">
+                    <span class="badge-lbl">Invoice No.</span>
+                    <span class="badge-val-bold" id="prev-invoiceno">CS260922-0157</span>
+                  </div>
+
+                  <div class="badge-row mt-1">
+                    <span class="badge-lbl">Date & Time</span>
+                    <span class="badge-val" id="prev-datetime">22 Sep 2026, 01:48 PM</span>
+                  </div>
+
+                  <div class="badge-row mt-1">
+                    <span class="badge-lbl">Payment Mode</span>
+                    <span class="badge-val-bold" id="prev-paymode">UPI / Card</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Items Table Section -->
+            <div class="inv-table-section">
+              <div class="inv-table-header">
+                <div class="th-num">#</div>
+                <div class="th-name">Item Name</div>
+                <div class="th-qty">Qty</div>
+                <div class="th-price">Price (₹)</div>
+                <div class="th-amount">Amount (₹)</div>
+              </div>
+
+              <div class="inv-table-body" id="prev-items-list">
+                <!-- Dynamically rendered rows -->
+              </div>
+            </div>
+
+            <!-- Bottom Section: QR Code Box + Totals -->
+            <div class="inv-bottom-row">
+              <!-- Left: Scan & Pay Box -->
+              <div class="scan-pay-card">
+                <div class="scan-title">Scan & Pay</div>
+                <div class="scan-subtitle">Pay using any UPI app</div>
+                
+                <div class="qr-code-wrapper">
+                  <img id="prev-qr-image" src="" alt="UPI QR Code">
+                </div>
+
+                <div class="scan-footer-note">
+                  Scan the QR code to make<br>your payment
+                </div>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div class="bottom-v-divider"></div>
+
+              <!-- Right: Totals Calculation -->
+              <div class="totals-section">
+                <div class="total-row">
+                  <span class="tot-label">Subtotal</span>
+                  <span class="tot-val" id="prev-subtotal">₹350.00</span>
+                </div>
+                <div class="total-row">
+                  <span class="tot-label">CGST (2.5%)</span>
+                  <span class="tot-val" id="prev-cgst">₹8.75</span>
+                </div>
+                <div class="total-row">
+                  <span class="tot-label">SGST (2.5%)</span>
+                  <span class="tot-val" id="prev-sgst">₹8.75</span>
+                </div>
+
+                <div class="grand-total-box">
+                  <span class="grand-label">Total Amount</span>
+                  <span class="grand-val" id="prev-total-amount">₹367.50</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="inv-footer">
+              <!-- Left Footer Column -->
+              <div class="footer-col-left">
+                <div class="footer-title-row">
+                  <span class="footer-line"></span>
+                  <span class="leaf-icon">🌿</span>
+                  <span class="footer-script">Good Food</span>
+                  <span class="leaf-icon">🌿</span>
+                  <span class="footer-line"></span>
+                </div>
+                <div class="footer-sub-text">— GREATER SERVICE —</div>
+              </div>
+
+              <!-- Footer Divider -->
+              <div class="footer-v-divider"></div>
+
+              <!-- Right Footer Column -->
+              <div class="footer-col-right">
+                <div class="footer-title-row">
+                  <span class="footer-line"></span>
+                  <span class="footer-script">Thank You</span>
+                  <span class="leaf-icon">🌿</span>
+                  <span class="footer-line"></span>
+                </div>
+                <div class="footer-sub-text">— VISIT AGAIN —</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <datalist id="menu-items-datalist">
+    <option value="Veg Biryani" data-price="120">
+    <option value="Paneer Butter Masala" data-price="140">
+    <option value="Chapati" data-price="15">
+    <option value="Buttermilk" data-price="20">
+    <option value="Gulab Jamun" data-price="40">
+    <option value="Masala Dosa" data-price="60">
+    <option value="Plain Dosa" data-price="50">
+    <option value="Idli Vada" data-price="45">
+    <option value="Veg Fried Rice" data-price="110">
+    <option value="Jeera Rice" data-price="90">
+    <option value="Dal Tadka" data-price="80">
+    <option value="Cold Coffee" data-price="50">
+    <option value="Filter Coffee" data-price="25">
+    <option value="Tea" data-price="15">
+  </datalist>
+
+  <!-- Hidden Canvas for thermal printing -->
+  <canvas id="thermal-canvas" width="576" height="1400" style="display:none;"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>

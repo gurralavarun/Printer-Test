@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canteen Services - POS & Billing Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 20%, #1e293b 0%, #0b1120 100%);
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .portal-box {
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981; }
+    h1 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 12px; }
+    p.lead { color: #94a3b8; font-size: 1.05rem; margin-bottom: 40px; }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      text-align: left;
+    }
+    .card {
+      background: #131c31;
+      border: 1px solid #2e3d5b;
+      border-radius: 16px;
+      padding: 28px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #38bdf8;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+    .card-ias:hover { border-color: #34d399; }
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .card-ias .card-icon {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    .card h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 8px; }
+    .card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; flex: 1; }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(51, 65, 85, 0.5);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .card-ias .card-footer { color: #34d399; }
+  </style>
+</head>
+<body>
+  <div class="portal-box">
+    <div class="badge">
+      <span class="dot"></span>
+      Printer Connected: POS-80C (USB001)
+    </div>
+    <h1>Canteen Services Billing Studio</h1>
+    <p class="lead">Select the template you wish to create and print:</p>
+
+    <div class="cards-grid">
+      <!-- Card 1: IAS Bill -->
+      <a href="/ias%20bill/" class="card card-ias">
+        <div class="card-icon">📋</div>
+        <h2>Food Invoice (IAS Bill)</h2>
+        <p>VIP & Officer invoice with Billed To customer details, dynamic UPI "Scan & Pay" QR code, CGST/SGST taxes, and 1-click WhatsApp image export.</p>
+        <div class="card-footer">
+          <span>Open IAS Bill Studio &rarr;</span>
+          <span style="opacity: 0.7;">WhatsApp & 80mm</span>
+        </div>
+      </a>
+
+      <!-- Card 2: Chef Bill -->
+      <a href="/chef%20bill/" class="card">
+        <div class="card-icon">🍲</div>
+        <h2>Kitchen Order Ticket (Chef Bill)</h2>
+        <p>Thermal KOT with table number callout box, preparation instructions, itemized quantities, remarks, and direct 80mm thermal auto-cut print.</p>
+        <div class="card-footer">
+          <span>Open Chef Bill Studio &rarr;</span>
+          <span style="opacity: 0.7;">Kitchen KOT</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
